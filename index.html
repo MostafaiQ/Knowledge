@@ -3,59 +3,179 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>التوافق الأبجدي العربي</title>
+    <title>المعرفة</title>
     <link
       rel="stylesheet"
       href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
     />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+    />
+
     <style>
       body {
-        background-color: #f8f9fa;
-        font-family: Arial, sans-serif;
+        background: linear-gradient(to bottom, #ece9e6, #ffffff);
+        font-family: "Poppins", Arial, sans-serif;
+        transition: background 0.5s ease;
       }
       .card {
-        margin-top: 50px;
+        margin: 50px auto;
+        max-width: 600px;
+        background: rgba(255, 255, 255, 0.9);
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+        border-radius: 20px;
+        overflow: hidden;
       }
       .form-control {
         text-align: right;
+        border-radius: 30px;
+        box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease;
+        padding: 15px;
+        font-size: 1rem;
+      }
+      .form-control:focus {
+        border-color: #007bff;
+        box-shadow: 0 0 8px rgba(0, 123, 255, 0.3);
+      }
+      .form-control.error {
+        border-color: #dc3545;
+        box-shadow: 0 0 8px rgba(220, 53, 69, 0.5);
+      }
+      button {
+        border-radius: 30px;
+        transition: transform 0.3s, background 0.3s, box-shadow 0.3s;
+        padding: 10px 20px;
+      }
+      button:hover {
+        transform: scale(1.05);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        filter: brightness(1.1);
       }
       .btn-primary {
-        background-color: #007bff;
-        border-color: #007bff;
+        background: linear-gradient(45deg, #007bff, #00c6ff);
+        border: none;
+      }
+      .btn-secondary {
+        background: linear-gradient(45deg, #ff4081, #ff80ab);
+        border: none;
+      }
+      .btn-info {
+        background: linear-gradient(45deg, #17a2b8, #1de9b6);
+        border: none;
+      }
+      .btn-warning {
+        background: linear-gradient(45deg, #ff9800, #ff5722);
+        border: none;
+      }
+      .btn-dark-mode {
+        position: absolute;
+        top: 20px;
+        left: 20px;
+        cursor: pointer;
+        transition: color 0.3s, transform 0.5s ease;
+      }
+      .btn-dark-mode:hover {
+        color: #f39c12;
+      }
+      .dark-mode {
+        background: linear-gradient(to bottom, #2c3e50, #34495e);
+        color: #ecf0f1;
+      }
+      .dark-mode .card {
+        background: #2c3e50;
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.7);
+      }
+      .dark-mode .form-control {
+        background: #34495e;
+        color: #ecf0f1;
+      }
+      .dark-mode button {
+        color: #ecf0f1;
+      }
+      .dark-mode .btn-dark-mode {
+        color: #f39c12;
+        transform: rotate(180deg);
+      }
+      .result-card {
+        background: #ffffff;
+        padding: 20px;
+        border-radius: 15px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        margin-top: 20px;
+        transition: transform 0.5s ease;
+      }
+      #result {
+        font-size: 1.2em;
+        font-weight: bold;
+        margin-top: 20px;
+        position: relative;
+        color: #2c3e50;
+      }
+      .dark-mode #result {
+        color: #000000;
+      }
+      #loadingSpinner {
+        display: none;
+        margin: 20px auto;
+      }
+      .icon-left {
+        margin-right: 5px;
       }
     </style>
   </head>
   <body>
+    <i class="fas fa-moon btn-dark-mode" onclick="toggleDarkMode()"></i>
     <div class="container">
       <div class="card">
         <div class="card-body">
-          <h3 class="card-title text-center">التوافق الأبجدي العربي</h3>
+          <h1 class="card-title text-center"><strong>المعرفة</strong></h1>
+          <h3 class="text-center">
+            "لا يمكنك تعليم أحد أي شيء، بل فقط مساعدته على العثور على المعرفة
+            داخل نفسه"
+          </h3>
           <form id="compatibilityForm">
-            <div class="form-group">
-              <label for="yourName">اسمك</label>
+            <div class="form-group text-right">
+              <label for="yourName"
+                ><i class="fas fa-user float-left icon-left"></i> اسمك</label
+              >
               <input
                 type="text"
                 class="form-control"
                 id="yourName"
                 placeholder="أدخل اسمك"
+                oninput="removeErrorHighlight('yourName')"
               />
             </div>
-            <div class="form-group">
-              <label for="motherName">اسم الأم</label>
+            <div class="form-group text-right">
+              <label for="motherName"
+                ><i class="fas fa-user float-left icon-left"></i> اسم
+                الأم</label
+              >
               <input
                 type="text"
                 class="form-control"
                 id="motherName"
                 placeholder="أدخل اسم الأم"
+                oninput="removeErrorHighlight('motherName')"
               />
             </div>
-            <div class="form-group">
-              <label for="partnerName">اسم الشريك (اختياري)</label>
+            <div class="form-group text-right">
+              <label for="partnerName"
+                ><i class="fas fa-heart float-left icon-left"></i> اسم الشريك
+                (اختياري)</label
+              >
               <input
                 type="text"
                 class="form-control"
                 id="partnerName"
                 placeholder="أدخل اسم الشريك"
+                oninput="removeErrorHighlight('partnerName')"
               />
             </div>
             <div class="text-center">
@@ -89,7 +209,10 @@
               </button>
             </div>
           </form>
-          <div id="result" class="mt-4 text-center"></div>
+          <div id="loadingSpinner" class="text-center">
+            <i class="fas fa-spinner fa-spin fa-3x"></i>
+          </div>
+          <div id="result" class="result-card text-center"></div>
         </div>
       </div>
     </div>
@@ -129,105 +252,170 @@
         غ: 1000,
       };
 
-      function calculateHoroscope() {
-        const yourName = document.getElementById("yourName").value.trim();
-        const motherName = document.getElementById("motherName").value.trim();
+      const zodiacEmojis = [
+        "♓️ الحوت",
+        "♈️ الحمل",
+        "♉️ الثور",
+        "♊️ الجوزاء",
+        "♋️ السرطان",
+        "♌️ الأسد",
+        "♍️ العذراء",
+        "♎️ الميزان",
+        "♏️ العقرب",
+        "♐️ القوس",
+        "♑️ الجدي",
+        "♒️ الدلو",
+      ];
+
+      const compatibilityEmojis = {
+        positive: "💖",
+        negative: "💔",
+        neutral: "🤝",
+      };
+
+      function toggleDarkMode() {
+        document.body.classList.toggle("dark-mode");
+      }
+
+      async function translateNameIfNeeded(name) {
+        const isArabic = /^[؀-ۿ\s]+$/.test(name);
+        if (isArabic) {
+          return name;
+        }
+
+        const apiKey = "9486173fc39851f7f26ae74fa562b91f63838488";
+        const url = "https://api.translateplus.io/v1/translate";
+
+        document.getElementById("loadingSpinner").style.display = "block";
+
+        try {
+          const response = await fetch(url, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              "X-API-KEY": apiKey,
+            },
+            body: JSON.stringify({
+              text: name,
+              source: "auto",
+              target: "ar",
+            }),
+          });
+
+          document.getElementById("loadingSpinner").style.display = "none";
+
+          if (response.ok) {
+            const data = await response.json();
+            return data.translations.translation;
+          } else {
+            console.error("Error translating name:", response.status);
+            return name; // Fallback to original name if translation fails
+          }
+        } catch (error) {
+          document.getElementById("loadingSpinner").style.display = "none";
+          console.error("Error during API request:", error);
+          return name; // Fallback to original name if an error occurs
+        }
+      }
+
+      async function calculateHoroscope() {
+        let yourName = document.getElementById("yourName").value.trim();
+        let motherName = document.getElementById("motherName").value.trim();
+
+        yourName = await translateNameIfNeeded(yourName);
+        motherName = await translateNameIfNeeded(motherName);
+
         if (yourName && motherName) {
           const yourNameValue = nameValue(yourName);
           const motherNameValue = nameValue(motherName);
-          if (yourNameValue >= 0 && motherNameValue >= 0) {
+          if (isValidNameValue(yourNameValue, motherNameValue)) {
             const sumNames = yourNameValue + motherNameValue;
-            const zodiacSigns = [
-              "الحوت",
-              "الحمل",
-              "الثور",
-              "الجوزاء",
-              "السرطان",
-              "الاسد",
-              "العذراء",
-              "الميزان",
-              "العقرب",
-              "القوس",
-              "الجدي",
-              "الدلو",
-            ];
-            const result = zodiacSigns[sumNames % 12];
-            document.getElementById("result").innerText = `برجك هو: ${result}`;
+            const result = zodiacEmojis[sumNames % 12];
+            displayResult(`برجك هو: ${result}`);
           }
         } else {
-          document.getElementById("result").innerText =
-            "الرجاء إدخال الأسماء بشكل صحيح.";
+          displayResult("الرجاء إدخال الأسماء بشكل صحيح.");
+          highlightErrors(["yourName", "motherName"]);
         }
       }
 
-      function calculateCompatibilityEnneagon() {
-        const yourName = document.getElementById("yourName").value.trim();
-        const partnerName = document.getElementById("partnerName").value.trim();
+      async function calculateCompatibilityEnneagon() {
+        let yourName = document.getElementById("yourName").value.trim();
+        let partnerName = document.getElementById("partnerName").value.trim();
+
+        yourName = await translateNameIfNeeded(yourName);
+        partnerName = await translateNameIfNeeded(partnerName);
+
         if (yourName && partnerName) {
           const yourNameValue = nameValue(yourName);
           const partnerNameValue = nameValue(partnerName);
-          if (yourNameValue >= 0 && partnerNameValue >= 0) {
-            let result = ((yourNameValue + partnerNameValue + 7 - 1) % 9) + 1;
+          if (isValidNameValue(yourNameValue, partnerNameValue)) {
+            let result = calculateEnneagonResult(
+              yourNameValue,
+              partnerNameValue
+            );
             const enneagonResults = {
-              1: "١- شراكة لا خير فيه (وسط)",
-              2: "٢- بقاية الموافقة (محبة)",
-              3: "٣- يتفقان مدة من الزمان وبعد يحدث شقاق وينتهي بالاختلاف والتباعد (عداوة)",
-              4: "٤- يعيشان في راحة وهناء وينتهي بالاختلاف والتباعد (وسط)",
-              5: "٥- يرث لهما جملة بنين وبنات (محبة)",
-              6: "٦- يموت احدهما بعد الاقتران ببرهة وحين (عداوة)",
-              7: "٧- يعيشان في اول الامر عيشة المسكنة والفقر وبعدها تصونهما الايام ويحصلان على مال وفير وخير كثير (وسط)",
-              8: "٨- لا يلدهما اولاد ولكن هذا لا يعكر صفاءهما (محبة هابطة)",
-              9: "٩- لا راحة ولا وفاق الا بالاختلاف والتباعد (عداوة)",
+              1: `١- شراكة لا خير فيه (وسط) ${compatibilityEmojis.neutral}`,
+              2: `٢- بقاية الموافقة (محبة) ${compatibilityEmojis.positive}`,
+              3: `٣- يتفقان مدة من الزمان وبعد يحدث شقاق وينتهي بالاختلاف والتباعد (عداوة) ${compatibilityEmojis.negative}`,
+              4: `٤- يعيشان في راحة وهناء وينتهي بالاختلاف والتباعد (وسط) ${compatibilityEmojis.neutral}`,
+              5: `٥- يرث لهما جملة بنين وبنات (محبة) ${compatibilityEmojis.positive}`,
+              6: `٦- يموت احدهما بعد الاقتران ببرهة وحين (عداوة) ${compatibilityEmojis.negative}`,
+              7: `٧- يعيشان في اول الامر عيشة المسكنة والفقر وبعدها تصونهما الايام ويحصلان على مال وفير وخير كثير (وسط) ${compatibilityEmojis.neutral}`,
+              8: `٨- لا يلدهما اولاد ولكن هذا لا يعكر صفاءهما (محبة هابطة) ${compatibilityEmojis.positive}`,
+              9: `٩- لا راحة ولا وفاق الا بالاختلاف والتباعد (عداوة) ${compatibilityEmojis.negative}`,
             };
-            document.getElementById("result").innerText =
-              enneagonResults[result];
+            displayResult(enneagonResults[result]);
           }
         } else {
-          document.getElementById("result").innerText =
-            "الرجاء إدخال الأسماء بشكل صحيح.";
+          displayResult("الرجاء إدخال الأسماء بشكل صحيح.");
+          highlightErrors(["yourName", "partnerName"]);
         }
       }
 
-      function calculateCompatibilityTrigon() {
-        const yourName = document.getElementById("yourName").value.trim();
-        const partnerName = document.getElementById("partnerName").value.trim();
+      function calculateEnneagonResult(yourNameValue, partnerNameValue) {
+        const sum = yourNameValue + partnerNameValue;
+        const adjustedSum = sum + 7 - 1;
+        return (adjustedSum % 9) + 1;
+      }
+
+      async function calculateCompatibilityTrigon() {
+        let yourName = document.getElementById("yourName").value.trim();
+        let partnerName = document.getElementById("partnerName").value.trim();
+
+        yourName = await translateNameIfNeeded(yourName);
+        partnerName = await translateNameIfNeeded(partnerName);
+
         if (yourName && partnerName) {
           const yourNameValue = nameValue(yourName);
           const partnerNameValue = nameValue(partnerName);
-          if (yourNameValue >= 0 && partnerNameValue >= 0) {
+          if (isValidNameValue(yourNameValue, partnerNameValue)) {
             const sumNames = yourNameValue + partnerNameValue;
-            let result;
-            switch (sumNames % 3) {
-              case 1:
-                result = "محبة.";
-                break;
-              case 2:
-                result = "خصام وعداوة.";
-                break;
-              case 0:
-                result = "وسط.";
-                break;
-            }
-            document.getElementById("result").innerText = result;
+            const trigonResults = {
+              0: `وسط. ${compatibilityEmojis.neutral}`,
+              1: `محبة. ${compatibilityEmojis.positive}`,
+              2: `خصام وعداوة. ${compatibilityEmojis.negative}`,
+            };
+            const result = trigonResults[sumNames % 3];
+            displayResult(result);
           }
         } else {
-          document.getElementById("result").innerText =
-            "الرجاء إدخال الأسماء بشكل صحيح.";
+          displayResult("الرجاء إدخال الأسماء بشكل صحيح.");
+          highlightErrors(["yourName", "partnerName"]);
         }
       }
 
-      function calculateNameValue() {
-        const name = document.getElementById("yourName").value.trim();
+      async function calculateNameValue() {
+        let name = document.getElementById("yourName").value.trim();
+        name = await translateNameIfNeeded(name);
         if (name) {
           const value = nameValue(name);
           if (value >= 0) {
-            document.getElementById(
-              "result"
-            ).innerText = `القيمة الأبجدية: ${value}`;
+            displayResult(`القيمة الأبجدية: ${value}`);
           }
         } else {
-          document.getElementById("result").innerText =
-            "الرجاء إدخال الاسم بشكل صحيح.";
+          displayResult("الرجاء إدخال الاسم بشكل صحيح.");
+          highlightErrors(["yourName"]);
         }
       }
 
@@ -242,11 +430,41 @@
           }
         }
         if (invalidChars.length > 0) {
-          document.getElementById("result").innerText =
-            "الأحرف غير الصالحة: " + invalidChars.join(", ");
+          displayResult("الأحرف غير الصالحة: " + invalidChars.join(", "));
           return -1;
         }
         return nameValue;
+      }
+
+      function isValidNameValue(...values) {
+        return values.every((value) => value >= 0);
+      }
+
+      function displayResult(message) {
+        const resultElement = document.getElementById("result");
+        resultElement.innerText = message;
+        resultElement.style.transform = "scale(1.05)";
+        setTimeout(() => {
+          resultElement.style.transform = "scale(1)";
+        }, 500);
+      }
+
+      function highlightErrors(fields) {
+        fields.forEach((fieldId) => {
+          const field = document.getElementById(fieldId);
+          if (field.value.trim() === "") {
+            field.classList.add("error");
+          } else {
+            field.classList.remove("error");
+          }
+        });
+      }
+
+      function removeErrorHighlight(fieldId) {
+        const field = document.getElementById(fieldId);
+        if (field.value.trim() !== "") {
+          field.classList.remove("error");
+        }
       }
     </script>
   </body>
