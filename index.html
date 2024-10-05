@@ -95,27 +95,65 @@
     </div>
 
     <script>
+      const valueMap = {
+        ء: 0,
+        ا: 1,
+        ب: 2,
+        ج: 3,
+        د: 4,
+        ه: 5,
+        ة: 5,
+        و: 6,
+        ز: 7,
+        ح: 8,
+        ط: 9,
+        ي: 10,
+        ى: 10,
+        ك: 20,
+        ل: 30,
+        م: 40,
+        ن: 50,
+        س: 60,
+        ع: 70,
+        ف: 80,
+        ص: 90,
+        ق: 100,
+        ر: 200,
+        ش: 300,
+        ت: 400,
+        ث: 500,
+        خ: 600,
+        ذ: 700,
+        ض: 800,
+        ظ: 900,
+        غ: 1000,
+      };
+
       function calculateHoroscope() {
-        const yourName = document.getElementById("yourName").value;
-        const motherName = document.getElementById("motherName").value;
+        const yourName = document.getElementById("yourName").value.trim();
+        const motherName = document.getElementById("motherName").value.trim();
         if (yourName && motherName) {
-          const sumNames = nameValue(yourName) + nameValue(motherName);
-          const zodiacSigns = [
-            "الحوت",
-            "الحمل",
-            "الثور",
-            "الجوزاء",
-            "السرطان",
-            "الاسد",
-            "العذراء",
-            "الميزان",
-            "العقرب",
-            "القوس",
-            "الجدي",
-            "الدلو",
-          ];
-          const result = zodiacSigns[sumNames % 12];
-          document.getElementById("result").innerText = `برجك هو: ${result}`;
+          const yourNameValue = nameValue(yourName);
+          const motherNameValue = nameValue(motherName);
+          if (yourNameValue >= 0 && motherNameValue >= 0) {
+            const sumNames = yourNameValue + motherNameValue;
+            const zodiacSigns = [
+              "الحوت",
+              "الحمل",
+              "الثور",
+              "الجوزاء",
+              "السرطان",
+              "الاسد",
+              "العذراء",
+              "الميزان",
+              "العقرب",
+              "القوس",
+              "الجدي",
+              "الدلو",
+            ];
+            const result = zodiacSigns[sumNames % 12];
+            document.getElementById("result").innerText = `برجك هو: ${result}`;
+          }
         } else {
           document.getElementById("result").innerText =
             "الرجاء إدخال الأسماء بشكل صحيح.";
@@ -123,23 +161,27 @@
       }
 
       function calculateCompatibilityEnneagon() {
-        const yourName = document.getElementById("yourName").value;
-        const partnerName = document.getElementById("partnerName").value;
+        const yourName = document.getElementById("yourName").value.trim();
+        const partnerName = document.getElementById("partnerName").value.trim();
         if (yourName && partnerName) {
-          let result =
-            ((nameValue(yourName) + nameValue(partnerName) + 7 - 1) % 9) + 1;
-          const enneagonResults = {
-            1: "١- شراكة لا خير فيه (وسط)",
-            2: "٢- بقاية الموافقة (محبة)",
-            3: "٣- يتفقان مدة من الزمان وبعد يحدث شقاق وينتهي بالاختلاف والتباعد (عداوة)",
-            4: "٤- يعيشان في راحة وهناء وينتهي بالاختلاف والتباعد (وسط)",
-            5: "٥- يرث لهما جملة بنين وبنات (محبة)",
-            6: "٦- يموت احدهما بعد الاقتران ببرهة وحين (عداوة)",
-            7: "٧- يعيشان في اول الامر عيشة المسكنة والفقر وبعدها تصونهما الايام ويحصلان على مال وفير وخير كثير (وسط)",
-            8: "٨- لا يلدهما اولاد ولكن هذا لا يعكر صفاءهما (محبة هابطة)",
-            9: "٩- لا راحة ولا وفاق الا بالاختلاف والتباعد (عداوة)",
-          };
-          document.getElementById("result").innerText = enneagonResults[result];
+          const yourNameValue = nameValue(yourName);
+          const partnerNameValue = nameValue(partnerName);
+          if (yourNameValue >= 0 && partnerNameValue >= 0) {
+            let result = ((yourNameValue + partnerNameValue + 7 - 1) % 9) + 1;
+            const enneagonResults = {
+              1: "١- شراكة لا خير فيه (وسط)",
+              2: "٢- بقاية الموافقة (محبة)",
+              3: "٣- يتفقان مدة من الزمان وبعد يحدث شقاق وينتهي بالاختلاف والتباعد (عداوة)",
+              4: "٤- يعيشان في راحة وهناء وينتهي بالاختلاف والتباعد (وسط)",
+              5: "٥- يرث لهما جملة بنين وبنات (محبة)",
+              6: "٦- يموت احدهما بعد الاقتران ببرهة وحين (عداوة)",
+              7: "٧- يعيشان في اول الامر عيشة المسكنة والفقر وبعدها تصونهما الايام ويحصلان على مال وفير وخير كثير (وسط)",
+              8: "٨- لا يلدهما اولاد ولكن هذا لا يعكر صفاءهما (محبة هابطة)",
+              9: "٩- لا راحة ولا وفاق الا بالاختلاف والتباعد (عداوة)",
+            };
+            document.getElementById("result").innerText =
+              enneagonResults[result];
+          }
         } else {
           document.getElementById("result").innerText =
             "الرجاء إدخال الأسماء بشكل صحيح.";
@@ -147,23 +189,27 @@
       }
 
       function calculateCompatibilityTrigon() {
-        const yourName = document.getElementById("yourName").value;
-        const partnerName = document.getElementById("partnerName").value;
+        const yourName = document.getElementById("yourName").value.trim();
+        const partnerName = document.getElementById("partnerName").value.trim();
         if (yourName && partnerName) {
-          const sumNames = nameValue(yourName) + nameValue(partnerName);
-          let result;
-          switch (sumNames % 3) {
-            case 1:
-              result = "محبة.";
-              break;
-            case 2:
-              result = "خصام وعداوة.";
-              break;
-            case 0:
-              result = "وسط.";
-              break;
+          const yourNameValue = nameValue(yourName);
+          const partnerNameValue = nameValue(partnerName);
+          if (yourNameValue >= 0 && partnerNameValue >= 0) {
+            const sumNames = yourNameValue + partnerNameValue;
+            let result;
+            switch (sumNames % 3) {
+              case 1:
+                result = "محبة.";
+                break;
+              case 2:
+                result = "خصام وعداوة.";
+                break;
+              case 0:
+                result = "وسط.";
+                break;
+            }
+            document.getElementById("result").innerText = result;
           }
-          document.getElementById("result").innerText = result;
         } else {
           document.getElementById("result").innerText =
             "الرجاء إدخال الأسماء بشكل صحيح.";
@@ -171,12 +217,14 @@
       }
 
       function calculateNameValue() {
-        const name = document.getElementById("yourName").value;
+        const name = document.getElementById("yourName").value.trim();
         if (name) {
           const value = nameValue(name);
-          document.getElementById(
-            "result"
-          ).innerText = `القيمة الأبجدية: ${value}`;
+          if (value >= 0) {
+            document.getElementById(
+              "result"
+            ).innerText = `القيمة الأبجدية: ${value}`;
+          }
         } else {
           document.getElementById("result").innerText =
             "الرجاء إدخال الاسم بشكل صحيح.";
@@ -184,48 +232,19 @@
       }
 
       function nameValue(name) {
-        const valueMap = {
-          ء: 0,
-          ا: 1,
-          ب: 2,
-          ج: 3,
-          د: 4,
-          ه: 5,
-          ة: 5,
-          و: 6,
-          ز: 7,
-          ح: 8,
-          ط: 9,
-          ي: 10,
-          ى: 10,
-          ك: 20,
-          ل: 30,
-          م: 40,
-          ن: 50,
-          س: 60,
-          ع: 70,
-          ف: 80,
-          ص: 90,
-          ق: 100,
-          ر: 200,
-          ش: 300,
-          ت: 400,
-          ث: 500,
-          خ: 600,
-          ذ: 700,
-          ض: 800,
-          ظ: 900,
-          غ: 1000,
-        };
         let nameValue = 0;
+        let invalidChars = [];
         for (let char of name) {
           if (valueMap[char] !== undefined) {
             nameValue += valueMap[char];
           } else {
-            document.getElementById("result").innerText =
-              "اسم غير صالح: " + name;
-            return -1;
+            invalidChars.push(char);
           }
+        }
+        if (invalidChars.length > 0) {
+          document.getElementById("result").innerText =
+            "الأحرف غير الصالحة: " + invalidChars.join(", ");
+          return -1;
         }
         return nameValue;
       }
