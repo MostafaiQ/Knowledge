@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>التوافق الأبجدي العربي</title>
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+    />
+    <style>
+      body {
+        background-color: #f8f9fa;
+        font-family: Arial, sans-serif;
+      }
+      .card {
+        margin-top: 50px;
+      }
+      .form-control {
+        text-align: right;
+      }
+      .btn-primary {
+        background-color: #007bff;
+        border-color: #007bff;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="card">
+        <div class="card-body">
+          <h3 class="card-title text-center">التوافق الأبجدي العربي</h3>
+          <form id="compatibilityForm">
+            <div class="form-group">
+              <label for="yourName">اسمك</label>
+              <input
+                type="text"
+                class="form-control"
+                id="yourName"
+                placeholder="أدخل اسمك"
+              />
+            </div>
+            <div class="form-group">
+              <label for="motherName">اسم الأم</label>
+              <input
+                type="text"
+                class="form-control"
+                id="motherName"
+                placeholder="أدخل اسم الأم"
+              />
+            </div>
+            <div class="form-group">
+              <label for="partnerName">اسم الشريك (اختياري)</label>
+              <input
+                type="text"
+                class="form-control"
+                id="partnerName"
+                placeholder="أدخل اسم الشريك"
+              />
+            </div>
+            <div class="text-center">
+              <button
+                type="button"
+                class="btn btn-primary"
+                onclick="calculateHoroscope()"
+              >
+                حساب البرج
+              </button>
+              <button
+                type="button"
+                class="btn btn-secondary"
+                onclick="calculateCompatibilityEnneagon()"
+              >
+                حساب التوافق بطريقة المتسع
+              </button>
+              <button
+                type="button"
+                class="btn btn-info"
+                onclick="calculateCompatibilityTrigon()"
+              >
+                حساب التوافق بطريقة المثلث
+              </button>
+              <button
+                type="button"
+                class="btn btn-warning"
+                onclick="calculateNameValue()"
+              >
+                حساب القيمة الأبجدية
+              </button>
+            </div>
+          </form>
+          <div id="result" class="mt-4 text-center"></div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      function calculateHoroscope() {
+        const yourName = document.getElementById("yourName").value;
+        const motherName = document.getElementById("motherName").value;
+        if (yourName && motherName) {
+          const sumNames = nameValue(yourName) + nameValue(motherName);
+          const zodiacSigns = [
+            "الحوت",
+            "الحمل",
+            "الثور",
+            "الجوزاء",
+            "السرطان",
+            "الاسد",
+            "العذراء",
+            "الميزان",
+            "العقرب",
+            "القوس",
+            "الجدي",
+            "الدلو",
+          ];
+          const result = zodiacSigns[sumNames % 12];
+          document.getElementById("result").innerText = `برجك هو: ${result}`;
+        } else {
+          document.getElementById("result").innerText =
+            "الرجاء إدخال الأسماء بشكل صحيح.";
+        }
+      }
+
+      function calculateCompatibilityEnneagon() {
+        const yourName = document.getElementById("yourName").value;
+        const partnerName = document.getElementById("partnerName").value;
+        if (yourName && partnerName) {
+          let result =
+            ((nameValue(yourName) + nameValue(partnerName) + 7 - 1) % 9) + 1;
+          const enneagonResults = {
+            1: "١- شراكة لا خير فيه (وسط)",
+            2: "٢- بقاية الموافقة (محبة)",
+            3: "٣- يتفقان مدة من الزمان وبعد يحدث شقاق وينتهي بالاختلاف والتباعد (عداوة)",
+            4: "٤- يعيشان في راحة وهناء وينتهي بالاختلاف والتباعد (وسط)",
+            5: "٥- يرث لهما جملة بنين وبنات (محبة)",
+            6: "٦- يموت احدهما بعد الاقتران ببرهة وحين (عداوة)",
+            7: "٧- يعيشان في اول الامر عيشة المسكنة والفقر وبعدها تصونهما الايام ويحصلان على مال وفير وخير كثير (وسط)",
+            8: "٨- لا يلدهما اولاد ولكن هذا لا يعكر صفاءهما (محبة هابطة)",
+            9: "٩- لا راحة ولا وفاق الا بالاختلاف والتباعد (عداوة)",
+          };
+          document.getElementById("result").innerText = enneagonResults[result];
+        } else {
+          document.getElementById("result").innerText =
+            "الرجاء إدخال الأسماء بشكل صحيح.";
+        }
+      }
+
+      function calculateCompatibilityTrigon() {
+        const yourName = document.getElementById("yourName").value;
+        const partnerName = document.getElementById("partnerName").value;
+        if (yourName && partnerName) {
+          const sumNames = nameValue(yourName) + nameValue(partnerName);
+          let result;
+          switch (sumNames % 3) {
+            case 1:
+              result = "محبة.";
+              break;
+            case 2:
+              result = "خصام وعداوة.";
+              break;
+            case 0:
+              result = "وسط.";
+              break;
+          }
+          document.getElementById("result").innerText = result;
+        } else {
+          document.getElementById("result").innerText =
+            "الرجاء إدخال الأسماء بشكل صحيح.";
+        }
+      }
+
+      function calculateNameValue() {
+        const name = document.getElementById("yourName").value;
+        if (name) {
+          const value = nameValue(name);
+          document.getElementById(
+            "result"
+          ).innerText = `القيمة الأبجدية: ${value}`;
+        } else {
+          document.getElementById("result").innerText =
+            "الرجاء إدخال الاسم بشكل صحيح.";
+        }
+      }
+
+      function nameValue(name) {
+        const valueMap = {
+          ء: 0,
+          ا: 1,
+          ب: 2,
+          ج: 3,
+          د: 4,
+          ه: 5,
+          ة: 5,
+          و: 6,
+          ز: 7,
+          ح: 8,
+          ط: 9,
+          ي: 10,
+          ى: 10,
+          ك: 20,
+          ل: 30,
+          م: 40,
+          ن: 50,
+          س: 60,
+          ع: 70,
+          ف: 80,
+          ص: 90,
+          ق: 100,
+          ر: 200,
+          ش: 300,
+          ت: 400,
+          ث: 500,
+          خ: 600,
+          ذ: 700,
+          ض: 800,
+          ظ: 900,
+          غ: 1000,
+        };
+        let nameValue = 0;
+        for (let char of name) {
+          if (valueMap[char] !== undefined) {
+            nameValue += valueMap[char];
+          } else {
+            document.getElementById("result").innerText =
+              "اسم غير صالح: " + name;
+            return -1;
+          }
+        }
+        return nameValue;
+      }
+    </script>
+  </body>
+</html>
